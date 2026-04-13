@@ -18,7 +18,7 @@ terraform {
 
   
   backend "gcs" {
-    bucket = " sandbox-terraform-state-dev"
+    bucket = "sandbox-terraform-state-dev"
      prefix = "terraform/state"
   }
 }
@@ -73,3 +73,47 @@ module "secrets" {
   db_password = random_password.db_password.result
 }
 
+
+
+# Artifact Registry
+module "artifact_registry" {
+  source = "../../modules/artifact_registry"
+
+  region          = var.region
+  repository_name = var.artifact_registry_name
+  environment     = var.environment
+  labels          = var.labels
+}
+
+ # Definición de nombres de servicios
+  locals {
+    franquicias = "franquicias-service-${var.environment}"
+  }
+
+
+# Cloud Run - (usando service_base)
+module "franquicias-service" {
+  source       = "../../modules/cloud_run/service_base"
+    service_name = local.franquicias
+    image_url    = "us-central1-docker.pkg.dev/${var.project_id}/${module.artifact_registry.repository_name}/${local.franquicias}:latest"
+  region       = var.region
+  cpu          = "1"
+  memory       = "512Mi"
+
+  envs = merge(
+    {
+      SPRING_PROFILES_ACTIVE=var.environment
+      DB_HOST = module.database.public_ip_address
+      DB_NAME = var.database_name
+      DB_USER = var.database_user
+    }
+  )
+
+  secrets = {
+    DB_PASS = {
+      name = "db-password-dev" # nombre del secret en Secret Manager
+      key  = "latest"
+    }
+    # Agrega más secrets si es necesario
+  }
+}

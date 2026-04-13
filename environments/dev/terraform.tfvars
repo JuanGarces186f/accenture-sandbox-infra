@@ -7,8 +7,8 @@ environment = "dev"
 artifact_registry_name = "accenture-sandbox-backend-repo"
 
 # Database Configuration
-db_instance_name  = "accenture_sandbox"
-database_name     = "accenture_sandbox_db"
+db_instance_name  = "accenture-sandbox"
+database_name     = "accenture-sandbox-db"
 database_user     = "accenture_sandbox_user"
 
 # Configuración de la base de datos parametrizada
@@ -17,6 +17,7 @@ tier             = "db-f1-micro"
 backup_enabled   = false
 disk_size        = 10
 disk_type        = "PD_SSD"
+db_zone          =  "us-central1-c"
 availability_type = "ZONAL"
 backup_retention = 7
 

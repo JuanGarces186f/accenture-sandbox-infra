@@ -1,12 +1,11 @@
-name: 'Terraform CI/CD'
+name: 'Terraform PR Checks'
 
 on:
-  push:
+  pull_request:
     branches: [master, dev]
-  workflow_dispatch:
 
 jobs:
-  terraform:
+  terraform-pr:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -15,7 +14,7 @@ jobs:
       - name: Set environment variables
         id: set_env
         run: |
-          if [[ "${GITHUB_REF}" == "refs/heads/master" || "${GITHUB_BASE_REF}" == "master" ]]; then
+          if [[ "${GITHUB_BASE_REF}" == "master" ]]; then
             echo "ENVIRONMENT=prod" >> $GITHUB_ENV
             echo "WORKDIR=environments/prod" >> $GITHUB_ENV
             echo "GCP_SECRET=GCP_CREDENTIALS_PROD" >> $GITHUB_ENV
@@ -43,9 +42,4 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan
-        working-directory: ${{ env.WORKDIR }}
-
-      - name: Terraform Apply
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        run: terraform apply -auto-approve
         working-directory: ${{ env.WORKDIR }}
