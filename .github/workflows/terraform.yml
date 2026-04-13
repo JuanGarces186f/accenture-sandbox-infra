@@ -1,0 +1,53 @@
+name: 'Terraform CI/CD'
+
+on:
+  push:
+    branches: [master, dev]
+  pull_request:
+    branches: [master, dev]
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set environment variables
+        id: set_env
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/master" || "${GITHUB_BASE_REF}" == "master" ]]; then
+            echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+            echo "WORKDIR=environments/prod" >> $GITHUB_ENV
+            echo "GCP_SECRET=GCP_CREDENTIALS_PROD" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=dev" >> $GITHUB_ENV
+            echo "WORKDIR=environments/dev" >> $GITHUB_ENV
+            echo "GCP_SECRET=GCP_CREDENTIALS_DEV" >> $GITHUB_ENV
+          fi
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Set up Google Cloud credentials
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets[env.GCP_SECRET] }}
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ${{ env.WORKDIR }}
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ${{ env.WORKDIR }}
+
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: ${{ env.WORKDIR }}
+
+      - name: Terraform Apply
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: terraform apply -auto-approve
+        working-directory: ${{ env.WORKDIR }}
