@@ -7,8 +7,8 @@ environment = "dev"
 artifact_registry_name = "accenture-sandbox-backend-repo"
 
 # Database Configuration
-db_instance_name  = "accenture_sandbox"
-database_name     = "accenture_sandbox_db"
+db_instance_name  = "accenture-sandbox"
+database_name     = "accenture-sandbox-db"
 database_user     = "accenture_sandbox_user"
 
 # Configuración de la base de datos parametrizada
