@@ -17,7 +17,7 @@ tier             = "db-f1-micro"
 backup_enabled   = false
 disk_size        = 10
 disk_type        = "PD_SSD"
-db_zone          =  us-central1-c
+db_zone          =  "us-central1-c"
 availability_type = "ZONAL"
 backup_retention = 7
 
