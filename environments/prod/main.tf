@@ -18,7 +18,7 @@ terraform {
 
   
   backend "gcs" {
-    bucket = "sandbox-terraform-state-dev"
+    bucket = "sandbox-terraform-state-prod"
      prefix = "terraform/state"
   }
 }
@@ -111,7 +111,7 @@ module "franquicias-service" {
 
   secrets = {
     DB_PASS = {
-      name = "db-password-dev" # nombre del secret en Secret Manager
+      name = "db-password-prod" # nombre del secret en Secret Manager
       key  = "latest"
     }
     # Agrega más secrets si es necesario

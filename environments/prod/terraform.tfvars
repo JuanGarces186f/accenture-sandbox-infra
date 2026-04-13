@@ -1,14 +1,14 @@
 # GCP Project Configuration
-project_id = "jpablog-sandbox" 
+project_id = "jpablog-accenture-sandbox" 
 region     = "us-central1"
-environment = "dev"
+environment = "prod"
 
 # Artifact Registry
 artifact_registry_name = "accenture-sandbox-backend-repo"
 
 # Database Configuration
 db_instance_name  = "accenture-sandbox"
-database_name     = "accenture-sandbox-db"
+database_name     = "accenture_sandbox_db"
 database_user     = "accenture_sandbox_user"
 
 # Configuración de la base de datos parametrizada
@@ -26,7 +26,7 @@ backup_retention = 7
 labels = {
   managed_by  = "terraform"
   project     = "accenture-sandbox"
-  environment = "dev"
+  environment = "prod"
 }
 
 
