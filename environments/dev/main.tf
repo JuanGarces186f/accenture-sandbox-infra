@@ -94,7 +94,7 @@ module "artifact_registry" {
 # Cloud Run - (usando service_base)
 module "franquicias-service" {
   source       = "../../modules/cloud_run/service_base"
-    service_name = local.learning_service_name
+    service_name = local.franquicias
     image_url    = "us-central1-docker.pkg.dev/${var.project_id}/${module.artifact_registry.repository_name}/${local.learning_service_name}:latest"
   region       = var.region
   cpu          = "1"
