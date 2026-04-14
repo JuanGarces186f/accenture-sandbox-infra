@@ -50,3 +50,10 @@ resource "google_cloud_run_service" "this" {
 
   autogenerate_revision_name = true
 }
+
+resource "google_cloud_run_service_iam_member" "public_invoker" {
+  location = google_cloud_run_service.this.location
+  service  = google_cloud_run_service.this.name
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+}
