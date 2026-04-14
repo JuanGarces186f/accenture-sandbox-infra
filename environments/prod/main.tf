@@ -104,7 +104,7 @@ module "franquicias-service" {
     {
       SPRING_PROFILES_ACTIVE=var.environment
       DB_HOST = module.database.public_ip_address
-      DB_NAME = var.database_name
+      DB_NAME = "${var.database_name}_${var.environment}"
       DB_USER = var.database_user
     }
   )
