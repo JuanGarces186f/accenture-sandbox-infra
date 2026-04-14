@@ -31,7 +31,7 @@ resource "google_sql_database_instance" "postgres" {
     ip_configuration {
       ipv4_enabled    = true
       private_network = var.private_network
-      ssl_mode        = "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+      ssl_mode        = "ENCRYPTED_ONLY"
       
       dynamic "authorized_networks" {
         for_each = var.authorized_networks
